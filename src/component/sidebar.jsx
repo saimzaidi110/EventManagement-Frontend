@@ -9,7 +9,7 @@ const Sidebar = () => {
         <li><Link to="/dashboard" className="hover:text-gray-300">Dashboard</Link></li>
         <li><Link to="profile" className="hover:text-gray-300">Profile</Link></li>
         <li><Link to="users" className="hover:text-gray-300">Users</Link></li>
-        <li><Link to="products" className="hover:text-gray-300">Products</Link></li>
+        <li><Link to="createevent" className="hover:text-gray-300">CreateEvent</Link></li>
         <li><Link to="createproducts" className="hover:text-gray-300">Create Products</Link></li>
         <li><Link to="setting" className="hover:text-gray-300">Settings</Link></li>
         <li><Link to="help" className="hover:text-gray-300">Help</Link></li>

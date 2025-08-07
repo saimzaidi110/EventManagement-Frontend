@@ -4,9 +4,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { apiurl } from "../api";
 
 export default function SignupPage() {
-    const {userlogin }=useContext(UserContext)
+    const { userlogin } = useContext(UserContext)
     const emailRef = useRef();
     const passwordRef = useRef();
     const navigate = useNavigate();
@@ -30,12 +31,12 @@ export default function SignupPage() {
         setError(null);
 
         try {
-            const response = await axios.post("https://event-management-backend-indol.vercel.app/users/login", {
+            const response = await axios.post(apiurl + "/users/login", {
 
                 email,
                 password,
             });
-
+            console.log(response)
             let { status, message, user } = response.data
             if (status) {
                 console.log("Login success:", user);
@@ -43,12 +44,12 @@ export default function SignupPage() {
                 userlogin(user);
 
                 // Navigate to login page or dashboard
-                
-                if(user?.role=="admin"){
+
+                if (user?.role !== "attendee") {
                     navigate('/dashboard')
                 }
-                
-                else{
+
+                else {
                     navigate("/");
                 }
 

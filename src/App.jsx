@@ -17,6 +17,7 @@ import UserPage from './pages/UserPage'
 import Productpages from './pages/Productpages'
 import CreateProduct from './pages/CreateProduct'
 import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import CreateEvent from './pages/dashboardpages/CreateEvent.jsx'
 
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
     },
     {
       path: '/dashboard',
-      element: user?.role == "admin" ? <MainDashboard /> : <Navigate to={'/'} />,
+      element: user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
       children: [
         {
           path: '/dashboard',
@@ -63,8 +64,8 @@ function App() {
           element: <UserPage />
         },
         {
-          path: 'products',
-          element: <Productpages />
+          path: 'createevent',
+          element: <CreateEvent />
         },
         {
           path: 'createproducts',

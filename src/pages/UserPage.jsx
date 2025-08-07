@@ -6,7 +6,7 @@
 //   const [users, setUsers] = useState([])
 //   const getusers = async () => {
 //     try {
-//       const response = await axios.get('https://event-management-backend-indol.vercel.app/users');
+//       const response = await axios.get(apiurl+'/users');
 //       console.log(response.data);
 //       setUsers(response.data.users)
 //     } catch (error) {
@@ -19,7 +19,7 @@
 // //deleteuser
 //    const handleDelete = async (id)=>{
 //     try {
-//       const response = await axios.delete(`https://event-management-backend-indol.vercel.app/users/${id}`);
+//       const response = await axios.delete(apiurl+`/users/${id}`);
 //       let { status, message, user } = response.data
 //       if(status){
 //         toast.success(message)
@@ -103,6 +103,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { apiurl } from '../api'
 
 export default function UserPage() {
   const [users, setUsers] = useState([])
@@ -114,7 +115,7 @@ export default function UserPage() {
 
   const getusers = async () => {
     try {
-      const response = await axios.get('https://event-management-backend-indol.vercel.app/users');
+      const response = await axios.get(apiurl+'/users');
       setUsers(response.data.users)
     } catch (error) {
       console.error(error);
@@ -139,7 +140,7 @@ export default function UserPage() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`https://event-management-backend-indol.vercel.app/users/${editUserId}`, editFormData)
+      const response = await axios.put(apiurl+`/users/${editUserId}`, editFormData)
       const { status, message } = response.data
       if (status) {
         toast.success(message)
@@ -156,7 +157,7 @@ export default function UserPage() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`https://event-management-backend-indol.vercel.app/users/${id}`);
+      const response = await axios.delete(apiurl+`/users/${id}`);
       const { status, message } = response.data
       if (status) {
         toast.success(message)

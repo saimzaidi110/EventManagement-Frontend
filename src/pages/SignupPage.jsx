@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { apiurl } from "../api";
 
 export default function SignupPage() {
   const emailRef = useRef();
@@ -31,7 +32,7 @@ export default function SignupPage() {
 
   console.log(username,email,password,role);
   try {
-    const response = await axios.post("https://event-management-backend-indol.vercel.app/users/signup", {
+    const response = await axios.post(apiurl+"/users/signup", {
       username,
       email,
       password,

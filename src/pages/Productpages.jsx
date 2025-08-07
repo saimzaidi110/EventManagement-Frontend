@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { apiurl } from '../api';
 
 export default function Productpages() {
   const [products, setProducts] = useState([]);
@@ -17,7 +18,7 @@ export default function Productpages() {
 
   const getproducts = async () => {
     try {
-      const response = await axios.get('https://event-management-backend-indol.vercel.app/products');
+      const response = await axios.get(apiurl+'/products');
       setProducts(response.data.products);
     } catch (error) {
       console.error(error);
@@ -47,7 +48,7 @@ export default function Productpages() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`https://event-management-backend-indol.vercel.app/products/${editProductId}`, {
+      const response = await axios.put(apiurl+`/products/${editProductId}`, {
         name: editFormData.name,
         description: editFormData.description,
         price: parseFloat(editFormData.price),
@@ -81,7 +82,7 @@ export default function Productpages() {
 
 const handleDelete = async (id) => {
   try {
-    const res = await axios.delete(`https://event-management-backend-indol.vercel.app/products/${id}`);
+    const res = await axios.delete(apiurl+`/products/${id}`);
 
     if (res.data.status) {
       toast.success(res.data.message || 'Product deleted successfully');
