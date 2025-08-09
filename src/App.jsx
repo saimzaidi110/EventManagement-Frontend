@@ -18,6 +18,9 @@ import Productpages from './pages/Productpages'
 import CreateProduct from './pages/CreateProduct'
 import ProtectedRoute from './pages/ProtectedRoute.jsx';
 import CreateEvent from './pages/dashboardpages/CreateEvent.jsx'
+import ExpoEventsTable from './pages/dashboardpages/ExpoEventsTable.jsx'
+import ExpoList from './pages/ExpoList.jsx'
+import EventDetail from './pages/EventDetail.jsx'
 
 
 function App() {
@@ -48,6 +51,14 @@ function App() {
       element: <BlogPage />
     },
     {
+      path: '/events',
+      element: <ExpoList />
+    },
+    {
+        path: '/event/:id',
+      element: <EventDetail />
+    },
+    {
       path: '/dashboard',
       element: user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
       children: [
@@ -68,8 +79,8 @@ function App() {
           element: <CreateEvent />
         },
         {
-          path: 'createproducts',
-          element: <CreateProduct />
+          path: 'events',
+          element: <ExpoEventsTable />
         },
         {
           path: 'setting',
@@ -80,44 +91,7 @@ function App() {
           element: <HelpPAge />
         },
       ]
-    }, {
-      path: '/dashboard',
-      element: (
-        <ProtectedRoute allowedRoles={['admin']}>
-          <MainDashboard />
-        </ProtectedRoute>
-      ),
-      children: [
-        {
-          path: '/dashboard',
-          element: <Dashboard />
-        },
-        {
-          path: 'profile',
-          element: <ProfilePage />
-        },
-        {
-          path: 'users',
-          element: <UserPage />
-        },
-        {
-          path: 'products',
-          element: <Productpages />
-        },
-        {
-          path: 'createproducts',
-          element: <CreateProduct />
-        },
-        {
-          path: 'setting',
-          element: <SettingPage />
-        },
-        {
-          path: 'help',
-          element: <HelpPAge />
-        },
-      ]
-    },
+    }, 
 
   ])
 

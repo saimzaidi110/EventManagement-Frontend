@@ -27,7 +27,7 @@ export default function NavbarComponent() {
 
                     <Link to="/blog" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Blog  </Link>
 
-                    <Link to="/premium" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Premium </Link>
+                    <Link to="/events" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Events </Link>
 
                     <Link to="/contact" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Contact Us </Link>
                 </div>

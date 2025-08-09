@@ -1,5 +1,5 @@
 import React from 'react'
-import NavbarComponent from './NavbarComponent'
+import NavbarComponent from '../component/NavbarComponent'
 
 export default function ContactusPage() {
   return (
