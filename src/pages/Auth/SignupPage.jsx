@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { apiurl } from "../api";
+import { apiurl } from "../../api";
 
 export default function SignupPage() {
   const emailRef = useRef();

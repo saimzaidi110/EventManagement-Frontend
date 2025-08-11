@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "../component/sidebar";
-import Navbar from "../component/navbar";
+import Sidebar from "../component/dashboardcomponents/sidebar";
+import Navbar from "../component/dashboardcomponents/DashboardNavbar";
 import { Outlet } from "react-router-dom";
 
 function MainDashboard() {

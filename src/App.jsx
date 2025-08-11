@@ -2,25 +2,25 @@ import { useContext, useState } from 'react'
 import './App.css'
 import HomePage from './pages/HomePage'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
+import LoginPage from './pages/Auth/LoginPage.jsx'
 import PremiumPage from './pages/PremiumPage'
 import BlogPage from './pages/BlogPage'
 import ContactusPage from './pages/ContactusPage'
 import MainDashboard from './pages/maindashboard'
 import ProfilePage from './pages/ProfilePage'
-import SettingPage from './pages/SettingPage'
-import HelpPAge from './pages/HelpPAge'
-import Dashboard from "./pages/dashboard";
-import SignupPage from "./pages/SignupPage"
+import SettingPage from './pages/dashboardpages/SettingPage.jsx'
+import HelpPAge from './pages/dashboardpages/HelpPAge.jsx'
+import Dashboard from "./pages/dashboardpages/Dashboard.jsx";
+import SignupPage from "./pages/Auth/SignupPage.jsx"
 import { UserContext } from './context/UserContext'
-import UserPage from './pages/UserPage'
-import Productpages from './pages/Productpages'
-import CreateProduct from './pages/CreateProduct'
-import ProtectedRoute from './pages/ProtectedRoute.jsx';
-import CreateEvent from './pages/dashboardpages/CreateEvent.jsx'
-import ExpoEventsTable from './pages/dashboardpages/ExpoEventsTable.jsx'
+import UserPage from './pages/dashboardpages/Organizer/UserPage.jsx'
+import CreateEvent from './pages/dashboardpages/Organizer/CreateEvent.jsx'
+import ExpoEventsTable from './pages/dashboardpages/Organizer/ExpoEventsTable.jsx'
 import ExpoList from './pages/ExpoList.jsx'
 import EventDetail from './pages/EventDetail.jsx'
+import ExhibitorExpoList from './pages/dashboardpages/Exhibitor/ExhibitorExpoList.jsx'
+import RegisterExpo from './pages/dashboardpages/Exhibitor/RegisterExpo.jsx'
+import ExhibitorRequestList from './pages/dashboardpages/Organizer/ExhibitorRequestList.jsx'
 
 
 function App() {
@@ -55,7 +55,7 @@ function App() {
       element: <ExpoList />
     },
     {
-        path: '/event/:id',
+      path: '/event/:id',
       element: <EventDetail />
     },
     {
@@ -80,8 +80,18 @@ function App() {
         },
         {
           path: 'events',
-          element: <ExpoEventsTable />
+          element: user?.role == "organizer" ? <ExpoEventsTable /> : <ExhibitorExpoList />,
         },
+
+        {
+          path: 'exporegister/:id',
+          element: <RegisterExpo />
+        },
+         {
+          path: 'exhibitorrequestlist',
+          element: <ExhibitorRequestList />
+        },
+
         {
           path: 'setting',
           element: <SettingPage />
@@ -91,7 +101,7 @@ function App() {
           element: <HelpPAge />
         },
       ]
-    }, 
+    },
 
   ])
 

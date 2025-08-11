@@ -198,8 +198,6 @@ const ExpoEventsTable = () => {
               <th className="py-3 px-4 text-left">Theme</th>
               <th className="py-3 px-4 text-left">Image</th>
               <th className="py-3 px-4 text-left">Booths</th>
-              <th className="py-3 px-4 text-left">Created At</th>
-              <th className="py-3 px-4 text-left">Updated At</th>
               <th className="py-3 px-4 text-center">Actions</th>
             </tr>
           </thead>
@@ -222,22 +220,17 @@ const ExpoEventsTable = () => {
                     />
                   </td>
                   <td className="py-3 px-4">{event.booths}</td>
-                  <td className="py-3 px-4">
-                    {new Date(event.createdAt).toLocaleString()}
-                  </td>
-                  <td className="py-3 px-4">
-                    {new Date(event.updatedAt).toLocaleString()}
-                  </td>
-                  <td className="py-3 px-4 text-center space-x-2">
+                 
+                  <td className="  py-3 px-4 text-center space-x-2">
                     <button
                       onClick={() => handleEdit(event)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                      className="bg-blue-500 my-1 w-full text-white px-3 py-1 rounded hover:bg-blue-600"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(event._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      className="bg-red-500 text-white w-full px-3 py-1 rounded hover:bg-red-600"
                     >
                       Delete
                     </button>

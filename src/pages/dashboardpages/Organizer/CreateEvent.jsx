@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiurl } from '../../api';
+import { apiurl } from '../../../api';
 
 const CreateEvent = () => {
   const [formData, setFormData] = useState({

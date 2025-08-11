@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import NavbarComponent from "../component/NavbarComponent";
-import FooterComponent from "../component/FooterComponent";
+import { apiurl } from "../../../api";
 
-export default function ExpoList() {
+export default function ExhibitorExpoList() {
   const [expos, setExpos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/expos")
+      .get(`${apiurl}/api/expos`)
       .then((res) => {
         setExpos(res.data);
       })
@@ -22,7 +21,6 @@ export default function ExpoList() {
   return (
     <>
 
-      <NavbarComponent />
       <div className="min-h-screen bg-gray-100 p-6">
         <h1 className="text-3xl font-bold mb-6 text-center">Upcoming Expos</h1>
 
@@ -49,10 +47,10 @@ export default function ExpoList() {
                     Theme: {expo.theme} | Booths: {expo.booths}
                   </p>
                   <button
-                    onClick={() => navigate(`/event/${expo._id}`)}
+                    onClick={() => navigate(`/dashboard/exporegister/${expo._id}`)}
                     className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
                   >
-                    Show Event Details
+                    Register
                   </button>
                 </div>
               </div>
@@ -60,7 +58,6 @@ export default function ExpoList() {
         </div>
       </div>
 
-      <FooterComponent />
     </>
   );
 }

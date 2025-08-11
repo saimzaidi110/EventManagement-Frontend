@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
-import { apiurl } from "../api";
+import { apiurl } from "../../api";
 
 export default function SignupPage() {
     const { userlogin } = useContext(UserContext)
