@@ -53,7 +53,26 @@ const ExhibitorRequestList = () => {
       }
     } catch (error) {
       console.error("Error approving exhibitor:", error);
-      toast.error("An error occurred while approving.");
+      const { response } = error
+      const res = await axios.post(
+        `${apiurl}/api/expos/reject-exhibitor`,
+        {
+          expoId,
+          exhibitorRequestId: exhibitorId,
+        }
+      );
+
+      if (res.status === 200) {
+        toast.error(response.data.message + "Exhibitor request rejected");
+        // toast.success("Exhibitor request rejected successfully!");
+        setRequests((prev) =>
+          prev.filter((req) => req._id !== exhibitorId)
+        );
+      } else {
+        toast.error("Failed to reject exhibitor request.");
+      }
+
+      handleReject(expoId, exhibitorId)
     }
   };
 

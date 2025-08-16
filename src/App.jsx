@@ -21,6 +21,7 @@ import EventDetail from './pages/EventDetail.jsx'
 import ExhibitorExpoList from './pages/dashboardpages/Exhibitor/ExhibitorExpoList.jsx'
 import RegisterExpo from './pages/dashboardpages/Exhibitor/RegisterExpo.jsx'
 import ExhibitorRequestList from './pages/dashboardpages/Organizer/ExhibitorRequestList.jsx'
+import ScheduleManagement from './pages/dashboardpages/Organizer/ScheduleManagement.jsx'
 
 
 function App() {
@@ -100,6 +101,10 @@ function App() {
           path: 'help',
           element: <HelpPAge />
         },
+        {
+          path:'schedulemanagement',
+          element:<ScheduleManagement/>
+        }
       ]
     },
 
