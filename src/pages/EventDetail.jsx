@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../context/UserContext";
+import NavbarComponent from "../component/NavbarComponent";
+import FooterComponent from "../component/FooterComponent";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -59,80 +61,105 @@ export default function EventDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        {/* Event Image */}
-        <img
-          src={event.imageUrl}
-          alt={event.title}
-          className="w-full h-72 object-cover"
-        />
+    <>
+      <NavbarComponent />
+      <div className="min-h-screen bg-gray-100 p-6 pt-[100px]">
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+          {/* Event Image */}
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-80 object-cover"
+          />
 
-        {/* Event Details */}
-        <div className="p-6 space-y-4">
-          <h1 className="text-3xl font-bold text-gray-800">{event.title}</h1>
-          <p className="text-gray-600">
-            📍 {event.location} | 🗓 {new Date(event.date).toLocaleDateString()} | ⏰ {event.time}
-          </p>
-          <p className="text-lg text-gray-700">{event.description}</p>
-          <p className="text-gray-600">🎤 Speaker: {event.speaker}</p>
-          <p className="text-gray-600">🎨 Theme: {event.theme}</p>
-          <p className="text-gray-600">🏢 Booths: {event.booths}</p>
+          {/* Event Details */}
+          <div className="p-8 space-y-6">
+            <h1 className="text-4xl font-extrabold text-gray-800">{event.title}</h1>
+            <p className="text-gray-600 text-lg">
+              📍 {event.location} | 🗓 {new Date(event.date).toLocaleDateString()} | ⏰ {event.time}
+            </p>
+            <p className="text-gray-700 leading-relaxed">{event.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+              <p>🎤 <span className="font-semibold">Speaker:</span> {event.speaker}</p>
+              <p>🎨 <span className="font-semibold">Theme:</span> {event.theme}</p>
+              <p>🏢 <span className="font-semibold">Booths:</span> {event.booths}</p>
+            </div>
 
-          {/* Attendee List */}
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-2">👥 Attendees</h2>
-            {event.attendeeList?.length > 0 ? (
-              <ul className="list-disc list-inside text-gray-700">
-                {event.attendeeList.map((att) => (
-                  <li key={att._id}>
-                    {att.username} ({att.email})
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500">No attendees registered yet.</p>
-            )}
-          </div>
+            {/* Attendee List */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">👥 Attendees</h2>
+              {event.attendeeList?.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-200 rounded-lg">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-gray-600">#</th>
+                        <th className="px-4 py-2 text-left text-gray-600">Username</th>
+                        <th className="px-4 py-2 text-left text-gray-600">Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {event.attendeeList.map((att, index) => (
+                        <tr key={att._id} className="hover:bg-gray-50">
+                          <td className="px-4 py-2">{index + 1}</td>
+                          <td className="px-4 py-2">{att.username}</td>
+                          <td className="px-4 py-2">{att.email}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-gray-500">No attendees registered yet.</p>
+              )}
+            </div>
 
-          {/* Exhibitor List */}
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-2">🏬 Exhibitors</h2>
-            {event.exhibitorList?.length > 0 ? (
-              <ul className="space-y-2">
-                {event.exhibitorList.map((ex) => (
-                  <li
-                    key={ex._id}
-                    className="p-3 border rounded bg-gray-50 shadow-sm"
-                  >
-                    <p className="font-medium">{ex.companyName}</p>
-                    <p className="text-sm text-gray-600">{ex.username} ({ex.email})</p>
-                    <p className="text-sm">Products/Services: {ex.productsServices}</p>
-                    <p className="text-sm">Documents: {ex.documents}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500">No exhibitors yet.</p>
-            )}
-          </div>
+            {/* Exhibitor List */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">🏬 Exhibitors</h2>
+              {event.exhibitorList?.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {event.exhibitorList.map((ex) => (
+                    <div
+                      key={ex._id}
+                      className="p-5 border rounded-xl bg-gray-50 shadow hover:shadow-md transition"
+                    >
+                      <p className="text-lg font-semibold">{ex.companyName}</p>
+                      <p className="text-sm text-gray-600">
+                        {ex.username} ({ex.email})
+                      </p>
+                      <p className="text-sm mt-2">
+                        <span className="font-medium">Products/Services:</span> {ex.productsServices}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">Documents:</span> {ex.documents}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">No exhibitors yet.</p>
+              )}
+            </div>
 
-          {/* Register Button */}
-          <div className="mt-6">
-            <button
-              onClick={handleRegister}
-              disabled={loading}
-              className={`px-6 py-3 rounded-lg text-white font-medium shadow-md transition ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {loading ? "Registering..." : "Register for Expo"}
-            </button>
+            {/* Register Button */}
+            <div className="mt-6">
+              <button
+                onClick={handleRegister}
+                disabled={loading}
+                className={`w-full md:w-auto px-8 py-3 rounded-xl text-white font-semibold shadow-md transition ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {loading ? "Registering..." : "Register for Expo"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <FooterComponent />
+    </>
   );
 }

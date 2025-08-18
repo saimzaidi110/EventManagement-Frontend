@@ -25,6 +25,7 @@ import ScheduleManagement from './pages/dashboardpages/Organizer/ScheduleManagem
 import AnalyticsPage from './pages/dashboardpages/Organizer/AnalyticsPage.jsx'
 import ExhibitorsTable from './pages/ExhibitorsTable.jsx'
 import ExhibitorProfile from './pages/dashboardpages/Exhibitor/ExhibitorProfile.jsx'
+import EventSchedules from './pages/EventSchedules.jsx'
 
 
 function App() {
@@ -55,8 +56,8 @@ function App() {
       element: <SignupPage />
     },
     {
-      path: '/premium',
-      element: <PremiumPage />
+      path: '/eventschedules',
+      element: <EventSchedules />
     },
     {
       path: '/blog',
