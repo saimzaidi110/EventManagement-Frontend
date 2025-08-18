@@ -13,6 +13,7 @@ const Sidebar = () => {
         <li><Link to="events" className="hover:text-gray-300">Expo & Events</Link></li>
         <li><Link to="exhibitorrequestlist" className="hover:text-gray-300">Exhibitor Request</Link></li>
         <li><Link to="schedulemanagement" className="hover:text-gray-300">Schedule Management</Link></li>
+        <li><Link to="analytics" className="hover:text-gray-300">Analytics</Link></li>
         <li><Link to="setting" className="hover:text-gray-300">Settings</Link></li>
         <li><Link to="help" className="hover:text-gray-300">Help</Link></li>
       </ul>

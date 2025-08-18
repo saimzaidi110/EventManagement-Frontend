@@ -1,122 +1,135 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { apiurl } from '../../../api';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { apiurl } from "../../../api";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RegisterExpo = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const { username, email } = user;
-    const { id } = useParams()
-    const navigate = useNavigate()
-    console.log(id)
-    const [formData, setFormData] = useState({
-        companyName: '',
-        productsServices: '',
-        documents: '',
-    });
-    const [loading, setLoading] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const { username, email } = user;
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
+  const [formData, setFormData] = useState({
+    companyName: "",
+    productsServices: "",
+    documents: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-        try {
-            const response = await axios.post(
-                `${apiurl}/api/expos/exporegisterrequest`,
-                {
-                    expoId: id,
-                    username,
-                    email,
-                    ...formData,
-                }
-            );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-            console.log(response.data);
-            if (response.data.status) {
-                toast.success('Expo registration request submitted successfully!');
-                navigate('/dashboard/events');
-            } else {
-                toast.error('Failed to submit registration request.');
-            }
-        } catch (error) {
-            alert('Error submitting the request.', error);
-        } finally {
-            setLoading(false);
+    try {
+      const response = await axios.post(
+        `${apiurl}/api/expos/exporegisterrequest`,
+        {
+          expoId: id,
+          username,
+          email,
+          ...formData,
         }
-    };
+      );
 
-    return (
-        <div className="flex justify-center mt-10">
-            <div className="bg-white shadow-lg rounded-2xl max-w-md w-full p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">
-                    Register for Expo
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-700 font-medium">
-                            Company Name
-                        </label>
-                        <input
-                            type="text"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            required
-                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
+      if (response.data.status) {
+        toast.success("Expo registration request submitted successfully!");
+        navigate("/dashboard/events");
+      } else {
+        toast.error("Failed to submit registration request.");
+      }
+    } catch (error) {
+      toast.error("Error submitting the request.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    <div>
-                        <label className="block text-gray-700 font-medium">
-                            Products/Services
-                        </label>
-                        <input
-                            type="text"
-                            name="productsServices"
-                            value={formData.productsServices}
-                            onChange={handleChange}
-                            required
-                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 via-blue-50 to-gray-100 px-4">
+      <div className="bg-white shadow-2xl rounded-2xl max-w-lg w-full p-10 transform transition duration-500 hover:scale-[1.02]">
+        {/* Header */}
+        <h2 className="text-3xl font-bold mb-2 text-gray-900 text-center">
+          Register for Expo
+        </h2>
+        <p className="text-gray-500 text-center mb-6 text-sm">
+          Please provide your company details to participate in this expo.
+        </p>
 
-                    <div>
-                        <label className="block text-gray-700 font-medium">
-                            Required Documents (Links or Descriptions)
-                        </label>
-                        <input
-                            type="text"
-                            name="documents"
-                            value={formData.documents}
-                            onChange={handleChange}
-                            required
-                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-                        />
-                    </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Company Name */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Company Name
+            </label>
+            <input
+              type="text"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
+              required
+              placeholder="Enter your company name"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm"
+            />
+          </div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full text-white py-2 px-4 rounded-lg transition ${loading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
-                            }`}
-                    >
-                        {loading ? 'Submitting...' : 'Submit Registration'}
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
+          {/* Products / Services */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Products / Services
+            </label>
+            <input
+              type="text"
+              name="productsServices"
+              value={formData.productsServices}
+              onChange={handleChange}
+              required
+              placeholder="E.g. IT Solutions, Electronics"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm"
+            />
+          </div>
+
+          {/* Required Documents */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Required Documents (Links or Descriptions)
+            </label>
+            <input
+              type="text"
+              name="documents"
+              value={formData.documents}
+              onChange={handleChange}
+              required
+              placeholder="Provide links or details"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-xl text-white font-semibold shadow-lg transition duration-300 ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            }`}
+          >
+            {loading ? "Submitting..." : "Submit Registration"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default RegisterExpo;

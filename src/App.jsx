@@ -22,6 +22,9 @@ import ExhibitorExpoList from './pages/dashboardpages/Exhibitor/ExhibitorExpoLis
 import RegisterExpo from './pages/dashboardpages/Exhibitor/RegisterExpo.jsx'
 import ExhibitorRequestList from './pages/dashboardpages/Organizer/ExhibitorRequestList.jsx'
 import ScheduleManagement from './pages/dashboardpages/Organizer/ScheduleManagement.jsx'
+import AnalyticsPage from './pages/dashboardpages/Organizer/AnalyticsPage.jsx'
+import ExhibitorsTable from './pages/ExhibitorsTable.jsx'
+import ExhibitorProfile from './pages/dashboardpages/Exhibitor/ExhibitorProfile.jsx'
 
 
 function App() {
@@ -34,6 +37,14 @@ function App() {
     {
       path: '/contact',
       element: <ContactusPage />
+    },
+     {
+      path: '/exhibitor',
+      element: <ExhibitorsTable />
+    },
+      {
+      path: '/exhibitor/:id',
+      element: <ExhibitorProfile />
     },
     {
       path: '/login',
@@ -70,6 +81,10 @@ function App() {
         {
           path: 'profile',
           element: <ProfilePage />
+        },
+         {
+          path: 'analytics',
+          element: <AnalyticsPage />
         },
         {
           path: 'users',

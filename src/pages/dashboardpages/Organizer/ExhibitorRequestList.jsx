@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiurl } from "../../../api";
+import { FaFileAlt } from "react-icons/fa";
+import { MdErrorOutline } from "react-icons/md";
 
 const ExhibitorRequestList = () => {
   const [requests, setRequests] = useState([]);
@@ -72,7 +74,6 @@ const ExhibitorRequestList = () => {
         toast.error("Failed to reject exhibitor request.");
       }
 
-      handleReject(expoId, exhibitorId)
     }
   };
 
@@ -102,94 +103,91 @@ const ExhibitorRequestList = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg text-gray-600">Loading requests...</p>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-lg text-gray-600 animate-pulse">Loading requests...</p>
       </div>
     );
   }
 
   return (
     <div className="p-6">
-      <div className="bg-white shadow-lg rounded-2xl overflow-hidden">
-        <table className="min-w-full table-auto border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Expo Title
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Username
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Company
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Products/Services
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
-                Documents
-              </th>
-              <th className="px-6 py-3 text-center text-sm font-semibold text-gray-600">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.length > 0 ? (
-              requests.map((req) => (
-                <tr
-                  key={req._id}
-                  className="border-t hover:bg-gray-50 transition"
-                >
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.expoTitle}
-                  </td>
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.username}
-                  </td>
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.email}
-                  </td>
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.companyName}
-                  </td>
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.productsServices}
-                  </td>
-                  <td className="px-6 py-3 text-sm text-gray-700">
-                    {req.documents}
-                  </td>
-                  <td className="px-6 py-3 text-center space-x-2">
-                    <button
-                      onClick={() => handleApprove(req.expoId, req._id)}
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm shadow"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleReject(req.expoId, req._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm shadow"
-                    >
-                      Reject
-                    </button>
+      <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-4">
+          <h2 className="text-xl font-bold">Exhibitor Requests</h2>
+          <p className="text-sm opacity-90">Manage and approve exhibitor applications</p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-100 sticky top-0">
+              <tr>
+                {[
+                  "Expo Title",
+                  "Username",
+                  "Email",
+                  "Company",
+                  "Products/Services",
+                  "Documents",
+                  "Actions",
+                ].map((head) => (
+                  <th
+                    key={head}
+                    className="px-6 py-3 text-left font-semibold text-gray-700 uppercase tracking-wide"
+                  >
+                    {head}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {requests.length > 0 ? (
+                requests.map((req) => (
+                  <tr
+                    key={req._id}
+                    className="border-t hover:bg-gray-50 transition"
+                  >
+                    <td className="px-6 py-4 font-medium text-gray-800">{req.expoTitle}</td>
+                    <td className="px-6 py-4">{req.username}</td>
+                    <td className="px-6 py-4 text-gray-600">{req.email}</td>
+                    <td className="px-6 py-4">{req.companyName}</td>
+                    <td className="px-6 py-4">{req.productsServices}</td>
+                    <td className="px-6 py-4 flex items-center gap-2">
+                      <FaFileAlt className="text-blue-500" />
+                      <span>{req.documents || "N/A"}</span>
+                    </td>
+                    <td className="px-6 py-4 text-center space-x-2">
+                      <button
+                        onClick={() => handleApprove(req.expoId, req._id)}
+                        className="bg-gradient-to-r my-1 w-full from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(req.expoId, req._id)}
+                        className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow"
+                      >
+                        Reject
+                      </button>
+
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center">
+                      <MdErrorOutline className="text-4xl text-gray-400 mb-2" />
+                      <p className="text-lg font-medium">No exhibitor requests found</p>
+                      <p className="text-sm text-gray-400">
+                        When exhibitors apply for this expo, they will appear here.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="7"
-                  className="px-6 py-4 text-center text-gray-500"
-                >
-                  No exhibitor requests found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

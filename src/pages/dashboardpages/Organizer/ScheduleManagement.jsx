@@ -158,8 +158,10 @@ const ScheduleManagement = () => {
                                         name="date"
                                         value={formData.date}
                                         onChange={handleInputChange}
+                                        min={new Date().toISOString().split("T")[0]}   // ✅ restrict past dates
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                     />
+
                                 </div>
 
                                 <div className="space-y-2">
