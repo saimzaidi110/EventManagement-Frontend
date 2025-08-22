@@ -73,7 +73,7 @@ function App() {
     },
     {
       path: '/dashboard',
-      element: user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
+      element: user && user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
       children: [
         {
           path: '/dashboard',
