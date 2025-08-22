@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import './App.css'
 import HomePage from './pages/HomePage'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
@@ -28,113 +28,54 @@ import ExhibitorProfile from './pages/dashboardpages/Exhibitor/ExhibitorProfile.
 import EventSchedules from './pages/EventSchedules.jsx'
 import EventManagementChatAppUI from './pages/Chat/EventManagementChatAppUI.jsx'
 
+// 🟢 Yeh hi chatbot hai
+import GeminiPage from './pages/chatbot/GeminiPage'
 
 function App() {
   const { user } = useContext(UserContext)
+
   const router = createBrowserRouter([
+    { path: '/', element: <HomePage /> },
+    { path: '/contact', element: <ContactusPage /> },
+    { path: '/exhibitor', element: <ExhibitorsTable /> },
+    { path: '/exhibitor/:id', element: <ExhibitorProfile /> },
+    { path: '/login', element: <LoginPage /> },
+    { path: '/signup', element: <SignupPage /> },
+    { path: '/eventschedules', element: <EventSchedules /> },
+    { path: '/blog', element: <BlogPage /> },
+    { path: '/events', element: <ExpoList /> },
+    { path: '/event/:id', element: <EventDetail /> },
+    { path: '/chat', element: <EventManagementChatAppUI /> },
+    // Agar full page chatbot bhi chahiye
+    { path: "/chatbot", element: <GeminiPage /> },
+
     {
-      path: '/',
-      element: <HomePage />
-    },
-    {
-      path: '/contact',
-      element: <ContactusPage />
-    },
-    {
-      path: '/exhibitor',
-      element: <ExhibitorsTable />
-    },
-    {
-      path: '/exhibitor/:id',
-      element: <ExhibitorProfile />
-    },
-    {
-      path: '/login',
-      element: <LoginPage />
-    },
-    {
-      path: '/signup',
-      element: <SignupPage />
-    },
-    {
-      path: '/eventschedules',
-      element: <EventSchedules />
-    },
-    {
-      path: '/blog',
-      element: <BlogPage />
-    },
-    {
-      path: '/events',
-      element: <ExpoList />
-    },
-    {
-      path: '/event/:id',
-      element: <EventDetail />
-    },
-    {
-      path: '/chat',
-      element: <EventManagementChatAppUI />
-    }, {
       path: '/dashboard',
       element: user && user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
       children: [
-        {
-          path: '/dashboard',
-          element: <Dashboard />
-        },
-        {
-          path: 'profile',
-          element: <ProfilePage />
-        },
-        {
-          path: 'analytics',
-          element: <AnalyticsPage />
-        },
-        {
-          path: 'users',
-          element: <UserPage />
-        },
-        {
-          path: 'createevent',
-          element: <CreateEvent />
-        },
-        {
-          path: 'events',
-          element: user?.role == "organizer" ? <ExpoEventsTable /> : <ExhibitorExpoList />,
-        },
-
-        {
-          path: 'exporegister/:id',
-          element: <RegisterExpo />
-        },
-        {
-          path: 'exhibitorrequestlist',
-          element: <ExhibitorRequestList />
-        },
-
-        {
-          path: 'setting',
-          element: <SettingPage />
-        },
-        {
-          path: 'help',
-          element: <HelpPAge />
-        },
-        {
-          path: 'schedulemanagement',
-          element: <ScheduleManagement />
-        }
+        { path: '/dashboard', element: <Dashboard /> },
+        { path: 'profile', element: <ProfilePage /> },
+        { path: 'analytics', element: <AnalyticsPage /> },
+        { path: 'users', element: <UserPage /> },
+        { path: 'createevent', element: <CreateEvent /> },
+        { path: 'events', element: user?.role == "organizer" ? <ExpoEventsTable /> : <ExhibitorExpoList /> },
+        { path: 'exporegister/:id', element: <RegisterExpo /> },
+        { path: 'exhibitorrequestlist', element: <ExhibitorRequestList /> },
+        { path: 'setting', element: <SettingPage /> },
+        { path: 'help', element: <HelpPAge /> },
+        { path: 'schedulemanagement', element: <ScheduleManagement /> },
       ]
-    },
-
+    }
   ])
 
   return (
     <>
+      {/* Router sab pages render karega */}
       <RouterProvider router={router} />
-    </>
 
+      {/* 🟢 Floating chatbot GeminiPage har page pe bottom right */}
+      <GeminiPage />
+    </>
   )
 }
 
