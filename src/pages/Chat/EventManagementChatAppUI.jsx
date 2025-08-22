@@ -269,9 +269,7 @@ export default function EventManagementWhatsAppUI() {
 
               <div className="px-4 py-3 border-t sticky bottom-0 bg-white">
                 <div className="max-w-3xl mx-auto flex items-center gap-3">
-                  <button className="p-2 rounded-md hover:bg-gray-100">
-                    <Paperclip size={18} className="text-[#625FFF]" />
-                  </button>
+               
                   <input value={composerText}
                     onChange={(e) => setComposerText(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
