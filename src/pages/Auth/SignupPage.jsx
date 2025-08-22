@@ -7,59 +7,62 @@ import { apiurl } from "../../api";
 export default function SignupPage() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const roleRef = useRef(); // New ref for role
+  const roleRef = useRef();
+  const questionRef = useRef();
+  const answerRef = useRef();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
- const handleSubmit = async (event) => {
-  event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const email = emailRef.current.value.trim();
-  const password = passwordRef.current.value.trim();
-  const role = roleRef.current.value;
+    const email = emailRef.current.value.trim();
+    const password = passwordRef.current.value.trim();
+    const role = roleRef.current.value;
+    const securityQuestion = questionRef.current.value;
+    const securityAnswer = answerRef.current.value.trim();
 
-  if (!email || !password || !role) {
-    setError("All fields are required.");
-    return;
-  }
-
-  const username = email.split('@')[0]; // Auto-generate username
-
-  setLoading(true);
-  setError(null);
-
-  console.log(username,email,password,role);
-  try {
-    const response = await axios.post(apiurl+"/users/signup", {
-      username,
-      email,
-      password,
-      role,
-    });
-
-    const { status, message } = response.data;
-
-    if (status) {
-      toast.success(message);
-      navigate("/login");
-    } else {
-      toast.error(message);
+    if (!email || !password || !role || !securityQuestion || !securityAnswer) {
+      setError("All fields are required.");
+      return;
     }
 
-  } catch (err) {
-    console.error("Signup error:", err);
-    if (err.response?.data?.message) {
-      setError(err.response.data.message);
-    } else {
-      setError("Something went wrong. Please try again.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+    const username = email.split('@')[0]; // Auto-generate username
 
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post(apiurl + "/users/signup", {
+        username,
+        email,
+        password,
+        role,
+        securityQuestion,
+        securityAnswer,
+      });
+
+      const { status, message } = response.data;
+
+      if (status) {
+        toast.success(message);
+        navigate("/login");
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className="bg-white">
@@ -81,7 +84,6 @@ export default function SignupPage() {
             {loading && <p className="text-blue-500 mt-4">Signing up...</p>}
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-            
 
               <div>
                 <label className="block text-base font-medium text-gray-900">Email</label>
@@ -116,6 +118,33 @@ export default function SignupPage() {
                   <option value="exhibitor">Exhibitor</option>
                   <option value="attendee">Attendee</option>
                 </select>
+              </div>
+
+              {/* Security Question */}
+              <div>
+                <label className="block text-base font-medium text-gray-900">Security Question</label>
+                <select
+                  ref={questionRef}
+                  defaultValue=""
+                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
+                >
+                  <option value="" disabled>Select a security question</option>
+                  <option value="What is your favorite color?">What is your favorite color?</option>
+                  <option value="What is your mother’s maiden name?">What is your mother’s maiden name?</option>
+                  <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+                  <option value="What city were you born in?">What city were you born in?</option>
+                </select>
+              </div>
+
+              {/* Security Answer */}
+              <div>
+                <label className="block text-base font-medium text-gray-900">Your Answer</label>
+                <input
+                  type="text"
+                  ref={answerRef}
+                  placeholder="Enter your answer"
+                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
+                />
               </div>
 
               <div>

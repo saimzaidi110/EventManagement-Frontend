@@ -1,162 +1,241 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
-import { useContext } from "react";
 import { apiurl } from "../../api";
 
-export default function SignupPage() {
-    const { userlogin } = useContext(UserContext)
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const navigate = useNavigate();
+export default function LoginPage() {
+  const { userlogin } = useContext(UserContext);
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  // Forgot password state
+  const [showForgot, setShowForgot] = useState(false);
+  const [step, setStep] = useState(1); // 1 = email, 2 = question
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [securityQuestion, setSecurityQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        const email = emailRef.current.value.trim();
-        const password = passwordRef.current.value.trim();
+    const email = emailRef.current.value.trim();
+    const password = passwordRef.current.value.trim();
 
-        if (!email || !password) {
-            setError("All fields are required.");
-            return;
+    if (!email || !password) {
+      setError("All fields are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post(apiurl + "/users/login", { email, password });
+      let { status, message, user, token } = response.data;
+
+      if (status) {
+        toast.success(message);
+        userlogin(user);
+        localStorage.setItem("token", token);
+
+        if (user?.role !== "attendee") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
         }
+      } else {
+        toast.error(message);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setLoading(true);
-        setError(null);
+  // Forgot password Step 1: Get question
+  const handleGetQuestion = async () => {
+    try {
+      const res = await axios.post(apiurl + "/users/forgot-password/question", {
+        email: forgotEmail,
+      });
+      if (res.data.status) {
+        setSecurityQuestion(res.data.question);
+        setStep(2);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      toast.error("Error fetching security question");
+    }
+  };
 
-        try {
-            const response = await axios.post(apiurl + "/users/login", {
+  // Forgot password Step 2: Reset password
+  const handleResetPassword = async () => {
+    try {
+      const res = await axios.post(apiurl + "/users/forgot-password/reset", {
+        email: forgotEmail,
+        answer,
+        newPassword,
+      });
+      if (res.data.status) {
+        toast.success("Password reset successful! Please login.");
+        setShowForgot(false);
+        setStep(1);
+        setForgotEmail("");
+        setAnswer("");
+        setNewPassword("");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      toast.error("Error resetting password");
+    }
+  };
 
-                email,
-                password,
-            });
-            console.log(response)
-            let { status, message, user } = response.data
-            if (status) {
-                console.log("Login success:", user);
-                toast.success(message)
-                userlogin(user);
-                localStorage.setItem("token", response.data.token);
-                // Navigate to login page or dashboard
+  return (
+    <div>
+      <section className="py-10 bg-gray-50 sm:py-16 lg:py-24">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
+              Welcome Back!
+            </h2>
+            <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-600">
+              Login to your account
+            </p>
+          </div>
 
-                if (user?.role !== "attendee") {
-                    navigate('/dashboard')
-                }
-
-                else {
-                    navigate("/");
-                }
-
-            }
-            else {
-                toast.error(message)
-            }
-
-        } catch (err) {
-            console.error("Login error:", err);
-            if (err.response?.data?.message) {
-                setError(err.response.data.message);
-            } else {
-                setError("Something went wrong. Please try again.");
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
-
-
-    // emailRef.current.value = ""
-    // passwordRef.current.value = ""
-
-
-
-    return (
-        <div>
-
-            <section class="py-10 bg-gray-50 sm:py-16 lg:py-24">
-                <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div class="max-w-2xl mx-auto text-center">
-                        <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">Welcome Back!</h2>
-                        <p class="max-w-xl mx-auto mt-4 text-base leading-relaxed text-gray-600">Login to your account</p>
+          <div className="relative max-w-md mx-auto mt-8 md:mt-16">
+            <div className="overflow-hidden bg-white rounded-md shadow-md">
+              <div className="px-4 py-6 sm:px-8 sm:py-7">
+                <form>
+                  <div className="space-y-5">
+                    <div>
+                      <label className="text-base font-medium text-gray-900"> Email address </label>
+                      <input
+                        type="email"
+                        ref={emailRef}
+                        placeholder="Enter email"
+                        className="block w-full py-4 px-4 mt-2 border border-gray-200 rounded-md"
+                      />
                     </div>
 
-                    <div class="relative max-w-md mx-auto mt-8 md:mt-16">
-                        <div class="overflow-hidden bg-white rounded-md shadow-md">
-                            <div class="px-4 py-6 sm:px-8 sm:py-7">
-                                <form action="#" method="POST">
-                                    <div class="space-y-5">
-                                        <div>
-                                            <label for="" class="text-base font-medium text-gray-900"> Email address </label>
-                                            <div class="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                                                    </svg>
-                                                </div>
-
-                                                <input
-                                                    type="email"
-                                                    name=""
-                                                    id=""
-                                                    placeholder="Enter email to get started"
-                                                    ref={emailRef}
-                                                    class="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div class="flex items-center justify-between">
-                                                <label for="" class="text-base font-medium text-gray-900"> Password </label>
-
-                                                <a href="#" title="" class="text-sm font-medium text-orange-500 transition-all duration-200 hover:text-orange-600 focus:text-orange-600 hover:underline"> Forgot password? </a>
-                                            </div>
-                                            <div class="mt-2.5 relative text-gray-400 focus-within:text-gray-600">
-                                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                                                        />
-                                                    </svg>
-                                                </div>
-
-                                                <input
-                                                    type="password"
-                                                    name=""
-                                                    id=""
-                                                    placeholder="Enter your password"
-                                                    ref={passwordRef}
-                                                    class="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <button onClick={handleSubmit} class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700">
-                                                Log in
-                                            </button>
-                                        </div>
-
-                                        <div class="text-center">
-                                            <p class="text-base text-gray-600">Don’t have an account? <Link to="/signup" title="" class="font-medium text-orange-500 transition-all duration-200 hover:text-orange-600 hover:underline">Create a free account</Link></p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <label className="text-base font-medium text-gray-900"> Password </label>
+                        <button
+                          type="button"
+                          className="text-sm font-medium text-orange-500 hover:underline"
+                          onClick={() => setShowForgot(true)}
+                        >
+                          Forgot password?
+                        </button>
+                      </div>
+                      <input
+                        type="password"
+                        ref={passwordRef}
+                        placeholder="Enter password"
+                        className="block w-full py-4 px-4 mt-2 border border-gray-200 rounded-md"
+                      />
                     </div>
+
+                    <div>
+                      <button
+                        onClick={handleSubmit}
+                        className="w-full px-4 py-4 text-white font-semibold rounded-md bg-blue-600 hover:bg-blue-700"
+                      >
+                        {loading ? "Logging in..." : "Log in"}
+                      </button>
+                    </div>
+
+                    <div className="text-center">
+                      <p className="text-base text-gray-600">
+                        Don’t have an account?{" "}
+                        <Link to="/signup" className="font-medium text-orange-500 hover:underline">
+                          Create a free account
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* Forgot Password Modal */}
+            {showForgot && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="bg-white p-6 rounded-md shadow-md w-96">
+                  <h3 className="text-xl font-semibold mb-4">Forgot Password</h3>
+
+                  {step === 1 && (
+                    <>
+                      <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        className="w-full mb-4 px-3 py-2 border rounded"
+                      />
+                      <button
+                        onClick={handleGetQuestion}
+                        className="w-full py-2 bg-blue-600 text-white rounded"
+                      >
+                        Get Security Question
+                      </button>
+                    </>
+                  )}
+
+                  {step === 2 && (
+                    <>
+                      <p className="mb-2 font-medium">Security Question:</p>
+                      <p className="mb-4 text-gray-700">{securityQuestion}</p>
+                      <input
+                        type="text"
+                        placeholder="Your Answer"
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                        className="w-full mb-3 px-3 py-2 border rounded"
+                      />
+                      <input
+                        type="password"
+                        placeholder="New Password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="w-full mb-3 px-3 py-2 border rounded"
+                      />
+                      <button
+                        onClick={handleResetPassword}
+                        className="w-full py-2 bg-green-600 text-white rounded"
+                      >
+                        Reset Password
+                      </button>
+                    </>
+                  )}
+
+                  <button
+                    className="mt-4 text-sm text-gray-600 underline"
+                    onClick={() => {
+                      setShowForgot(false);
+                      setStep(1);
+                    }}
+                  >
+                    Cancel
+                  </button>
                 </div>
-            </section>
-
+              </div>
+            )}
+          </div>
         </div>
-    )
+      </section>
+    </div>
+  );
 }
