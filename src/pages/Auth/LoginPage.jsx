@@ -42,7 +42,7 @@ export default function SignupPage() {
                 console.log("Login success:", user);
                 toast.success(message)
                 userlogin(user);
-
+                localStorage.setItem("token", response.data.token);
                 // Navigate to login page or dashboard
 
                 if (user?.role !== "attendee") {

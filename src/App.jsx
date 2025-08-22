@@ -26,6 +26,7 @@ import AnalyticsPage from './pages/dashboardpages/Organizer/AnalyticsPage.jsx'
 import ExhibitorsTable from './pages/ExhibitorsTable.jsx'
 import ExhibitorProfile from './pages/dashboardpages/Exhibitor/ExhibitorProfile.jsx'
 import EventSchedules from './pages/EventSchedules.jsx'
+import EventManagementChatAppUI from './pages/Chat/EventManagementChatAppUI.jsx'
 
 
 function App() {
@@ -39,11 +40,11 @@ function App() {
       path: '/contact',
       element: <ContactusPage />
     },
-     {
+    {
       path: '/exhibitor',
       element: <ExhibitorsTable />
     },
-      {
+    {
       path: '/exhibitor/:id',
       element: <ExhibitorProfile />
     },
@@ -72,6 +73,9 @@ function App() {
       element: <EventDetail />
     },
     {
+      path: '/chat',
+      element: <EventManagementChatAppUI />
+    }, {
       path: '/dashboard',
       element: user && user?.role !== "attendee" ? <MainDashboard /> : <Navigate to={'/'} />,
       children: [
@@ -83,7 +87,7 @@ function App() {
           path: 'profile',
           element: <ProfilePage />
         },
-         {
+        {
           path: 'analytics',
           element: <AnalyticsPage />
         },
@@ -104,7 +108,7 @@ function App() {
           path: 'exporegister/:id',
           element: <RegisterExpo />
         },
-         {
+        {
           path: 'exhibitorrequestlist',
           element: <ExhibitorRequestList />
         },
@@ -118,8 +122,8 @@ function App() {
           element: <HelpPAge />
         },
         {
-          path:'schedulemanagement',
-          element:<ScheduleManagement/>
+          path: 'schedulemanagement',
+          element: <ScheduleManagement />
         }
       ]
     },
