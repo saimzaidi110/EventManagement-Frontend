@@ -18,6 +18,7 @@ export default function EventManagementWhatsAppUI() {
   const [messages, setMessages] = useState([]);
   const [composerText, setComposerText] = useState("");
   const [unreadCounts, setUnreadCounts] = useState({});
+  console.log("unreadCounts",unreadCounts)
   const messagesEndRef = useRef(null);
   const socketRef = useRef(null);
 
