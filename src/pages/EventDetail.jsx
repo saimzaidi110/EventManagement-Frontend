@@ -14,15 +14,27 @@ export default function EventDetail() {
 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [comment, setComment] = useState("");
 
-  // Fetch event details
+  // Fetch event details + feedbacks
   useEffect(() => {
     axios
       .get(`http://localhost:3000/api/expos/${id}`)
       .then((res) => setEvent(res.data))
       .catch((err) => console.error("Error fetching event:", err));
+
+    axios
+      .get(`http://localhost:3000/api/feedbacks/${id}`)
+      .then((res) => {
+        if (res.data.success) {
+          setFeedbacks(res.data.feedbacks);
+        }
+      })
+      .catch((err) => console.error("Error fetching feedbacks:", err));
   }, [id]);
 
+  // ✅ Register
   const handleRegister = async () => {
     if (!user) {
       navigate("/login");
@@ -35,15 +47,17 @@ export default function EventDetail() {
     }
 
     setLoading(true);
-
     try {
-      const res = await axios.post("http://localhost:3000/api/expos/attendeeregister", {
-        expoId: event._id,
-        username: user.username,
-        email: user.email,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/api/expos/attendeeregister",
+        {
+          expoId: event._id,
+          username: user.username,
+          email: user.email,
+        }
+      );
 
-      if (res.data.status) {
+      if (res.data.success) {
         toast.success(res.data.message);
       } else {
         toast.warning(res.data.message);
@@ -56,6 +70,40 @@ export default function EventDetail() {
     }
   };
 
+  // ✅ Submit feedback
+  const handleFeedbackSubmit = async () => {
+    if (!user) {
+      toast.error("Please login to give feedback");
+      navigate("/login");
+      return;
+    }
+
+    if (!comment.trim()) {
+      toast.warning("Feedback cannot be empty");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:3000/api/feedbacks", {
+        eventId: id,
+        userId: user._id,
+        username: user.username,
+        message: comment, // backend expects "message"
+      });
+
+      if (res.data.success) {
+        toast.success("Feedback submitted");
+        setComment("");
+        setFeedbacks((prev) => [...prev, res.data.feedback]);
+      } else {
+        toast.warning(res.data.message);
+      }
+    } catch (err) {
+      console.error("Feedback Error:", err);
+      toast.error("Server error while submitting feedback");
+    }
+  };
+
   if (!event) {
     return <div className="p-6 text-center">Loading event details...</div>;
   }
@@ -64,7 +112,7 @@ export default function EventDetail() {
     <>
       <NavbarComponent />
       <div className="min-h-screen bg-gray-100 p-6 pt-[100px]">
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
           {/* Event Image */}
           <img
             src={event.imageUrl}
@@ -74,15 +122,25 @@ export default function EventDetail() {
 
           {/* Event Details */}
           <div className="p-8 space-y-6">
-            <h1 className="text-4xl font-extrabold text-gray-800">{event.title}</h1>
+            <h1 className="text-4xl font-extrabold text-gray-800">
+              {event.title}
+            </h1>
             <p className="text-gray-600 text-lg">
-              📍 {event.location} | 🗓 {new Date(event.date).toLocaleDateString()} | ⏰ {event.time}
+              📍 {event.location} | 🗓{" "}
+              {new Date(event.date).toLocaleDateString()} | ⏰ {event.time}
             </p>
             <p className="text-gray-700 leading-relaxed">{event.description}</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-              <p>🎤 <span className="font-semibold">Speaker:</span> {event.speaker}</p>
-              <p>🎨 <span className="font-semibold">Theme:</span> {event.theme}</p>
-              <p>🏢 <span className="font-semibold">Booths:</span> {event.booths}</p>
+              <p>
+                🎤 <span className="font-semibold">Speaker:</span>{" "}
+                {event.speaker}
+              </p>
+              <p>
+                🎨 <span className="font-semibold">Theme:</span> {event.theme}
+              </p>
+              <p>
+                🏢 <span className="font-semibold">Booths:</span> {event.booths}
+              </p>
             </div>
 
             {/* Attendee List */}
@@ -94,8 +152,12 @@ export default function EventDetail() {
                     <thead className="bg-gray-100">
                       <tr>
                         <th className="px-4 py-2 text-left text-gray-600">#</th>
-                        <th className="px-4 py-2 text-left text-gray-600">Username</th>
-                        <th className="px-4 py-2 text-left text-gray-600">Email</th>
+                        <th className="px-4 py-2 text-left text-gray-600">
+                          Username
+                        </th>
+                        <th className="px-4 py-2 text-left text-gray-600">
+                          Email
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -129,10 +191,12 @@ export default function EventDetail() {
                         {ex.username} ({ex.email})
                       </p>
                       <p className="text-sm mt-2">
-                        <span className="font-medium">Products/Services:</span> {ex.productsServices}
+                        <span className="font-medium">Products/Services:</span>{" "}
+                        {ex.productsServices}
                       </p>
                       <p className="text-sm">
-                        <span className="font-medium">Documents:</span> {ex.documents}
+                        <span className="font-medium">Documents:</span>{" "}
+                        {ex.documents}
                       </p>
                     </div>
                   ))}
@@ -155,6 +219,43 @@ export default function EventDetail() {
               >
                 {loading ? "Registering..." : "Register for Expo"}
               </button>
+            </div>
+
+            {/* ✅ Feedback Section */}
+            <div className="mt-10">
+              <h2 className="text-2xl font-semibold mb-4">💬 Feedback</h2>
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Write your feedback..."
+                  className="flex-1 px-4 py-2 border rounded-xl"
+                />
+                <button
+                  onClick={handleFeedbackSubmit}
+                  className="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700"
+                >
+                  Submit
+                </button>
+              </div>
+
+              {/* Feedback List */}
+              <div className="mt-6 space-y-4">
+                {feedbacks.length > 0 ? (
+                  feedbacks.map((fb, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border rounded-lg bg-gray-50 shadow"
+                    >
+                      <p className="text-gray-800 font-medium">{fb.username}</p>
+                      <p className="text-gray-600">{fb.message}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No feedback yet.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
