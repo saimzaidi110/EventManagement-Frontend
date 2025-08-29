@@ -15,26 +15,26 @@ console.log({
         message: comment, // ✅ backend expects "message"
         rating,
 })
-//     try {
-//       const res = await axios.post("http://localhost:3000/api/feedbacks", {
-//         userId,
-//         eventId,
-//         message: comment, // ✅ backend expects "message"
-//         rating,
-//       });
-// console.log(res)
-//       if (res.data.success) { // ✅ backend returns "success"
-//         toast.success("Feedback submitted!");
-//         setComment("");
-//         setRating(5);
-//         if (onFeedbackSubmitted) onFeedbackSubmitted();
-//       } else {
-//         toast.warning(res.data.message || "Could not submit feedback");
-//       }
-//     } catch (err) {
-//       toast.error("Server error while submitting feedback");
-//       console.error("Feedback Submit Error:", err);
-//     }
+    try {
+      const res = await axios.post("http://localhost:3000/api/feedbacks", {
+        userId,
+        eventId,
+        message: comment, // ✅ backend expects "message"
+        rating,
+      });
+console.log(res)
+      if (res.data.success) { // ✅ backend returns "success"
+        toast.success("Feedback submitted!");
+        setComment("");
+        setRating(5);
+        if (onFeedbackSubmitted) onFeedbackSubmitted();
+      } else {
+        toast.warning(res.data.message || "Could not submit feedback");
+      }
+    } catch (err) {
+      toast.error("Server error while submitting feedback");
+      console.error("Feedback Submit Error:", err);
+    }
   };
 
   return (

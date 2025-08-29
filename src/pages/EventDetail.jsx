@@ -16,6 +16,7 @@ export default function EventDetail() {
   const [loading, setLoading] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5);
 
   // Fetch event details + feedbacks
   useEffect(() => {
@@ -33,6 +34,24 @@ export default function EventDetail() {
       })
       .catch((err) => console.error("Error fetching feedbacks:", err));
   }, [id]);
+useEffect(() => {
+  const carousel = document.getElementById("feedback-carousel");
+  if (!carousel) return;
+
+  let scrollAmount = 0;
+  const scrollStep = 320; // ek card width + gap
+  const interval = setInterval(() => {
+    if (carousel.scrollWidth - carousel.clientWidth <= scrollAmount) {
+      scrollAmount = 0; // reset back to start
+      carousel.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      scrollAmount += scrollStep;
+      carousel.scrollBy({ left: scrollStep, behavior: "smooth" });
+    }
+  }, 1000); // har 3 sec me scroll hoga
+
+  return () => clearInterval(interval);
+}, [feedbacks]);
 
   // ✅ Register
   const handleRegister = async () => {
@@ -86,14 +105,16 @@ export default function EventDetail() {
     try {
       const res = await axios.post("http://localhost:3000/api/feedbacks", {
         eventId: id,
-        userId: user._id,
+        userId: user.id,
         username: user.username,
-        message: comment, // backend expects "message"
+        message: comment,
+        rating, // ✅ send rating explicitly to satisfy schema
       });
 
       if (res.data.success) {
-        toast.success("Feedback submitted");
+        toast.success(res.data.message);
         setComment("");
+        setRating(5);
         setFeedbacks((prev) => [...prev, res.data.feedback]);
       } else {
         toast.warning(res.data.message);
@@ -103,6 +124,11 @@ export default function EventDetail() {
       toast.error("Server error while submitting feedback");
     }
   };
+
+
+
+
+
 
   if (!event) {
     return <div className="p-6 text-center">Loading event details...</div>;
@@ -211,52 +237,82 @@ export default function EventDetail() {
               <button
                 onClick={handleRegister}
                 disabled={loading}
-                className={`w-full md:w-auto px-8 py-3 rounded-xl text-white font-semibold shadow-md transition ${
-                  loading
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
-                }`}
+                className={`w-full md:w-auto px-8 py-3 rounded-xl text-white font-semibold shadow-md transition ${loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+                  }`}
               >
                 {loading ? "Registering..." : "Register for Expo"}
               </button>
             </div>
+{/* ✅ Feedback Section */}
+<div className="mt-10">
+  <h2 className="text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+    💬 Feedback
+  </h2>
 
-            {/* ✅ Feedback Section */}
-            <div className="mt-10">
-              <h2 className="text-2xl font-semibold mb-4">💬 Feedback</h2>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Write your feedback..."
-                  className="flex-1 px-4 py-2 border rounded-xl"
-                />
-                <button
-                  onClick={handleFeedbackSubmit}
-                  className="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700"
-                >
-                  Submit
-                </button>
-              </div>
+  {/* Input Box */}
+  <div className="flex flex-col md:flex-row gap-3 bg-gray-50 p-4 rounded-xl shadow">
+    <input
+      type="text"
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+      placeholder="Write your feedback..."
+      className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+    />
 
-              {/* Feedback List */}
-              <div className="mt-6 space-y-4">
-                {feedbacks.length > 0 ? (
-                  feedbacks.map((fb, index) => (
-                    <div
-                      key={index}
-                      className="p-4 border rounded-lg bg-gray-50 shadow"
-                    >
-                      <p className="text-gray-800 font-medium">{fb.username}</p>
-                      <p className="text-gray-600">{fb.message}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500">No feedback yet.</p>
-                )}
-              </div>
-            </div>
+    {/* ⭐️ Rating dropdown */}
+    <select
+      value={rating}
+      onChange={(e) => setRating(Number(e.target.value))}
+      className="border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+    >
+      {[1, 2, 3, 4, 5].map((r) => (
+        <option key={r} value={r}>
+          ⭐ {r}
+        </option>
+      ))}
+    </select>
+
+    <button
+      onClick={handleFeedbackSubmit}
+      className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold shadow hover:from-green-600 hover:to-green-700 transition"
+    >
+      Submit
+    </button>
+  </div>
+
+  {/* Feedback List - Horizontal Scroll */}
+  <div
+    id="feedback-carousel"
+    className="mt-8 flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide"
+  >
+    {feedbacks.length > 0 ? (
+      feedbacks.map((fb, index) => (
+        <div
+          key={index}
+          className="min-w-[300px] max-w-[300px] flex-shrink-0 p-5 border rounded-2xl bg-white shadow-md hover:shadow-lg transition transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-lg font-semibold text-gray-800">{fb.username}</p>
+            {/* ⭐ rating badge */}
+            <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
+              ⭐ {fb.rating || 5}/5
+            </span>
+          </div>
+
+          <p className="text-gray-700 leading-relaxed">{fb.message}</p>
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-500 text-center italic">
+        No feedback yet. Be the first to share!
+      </p>
+    )}
+  </div>
+</div>
+
+
           </div>
         </div>
       </div>

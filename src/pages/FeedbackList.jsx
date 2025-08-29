@@ -6,15 +6,19 @@ export default function FeedbackList({ eventId }) {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/feedbacks/event/${eventId}`);
-      setFeedbacks(res.data);
+      const res = await axios.get(`http://localhost:3000/api/feedbacks/${eventId}`);
+      
+      // 🔥 Tumhari API response { success, feedbacks } me hai
+      if (res.data.success) {
+        setFeedbacks(res.data.feedbacks);
+      }
     } catch (err) {
       console.error("Error fetching feedbacks:", err);
     }
   };
 
   useEffect(() => {
-    fetchFeedbacks();
+    if (eventId) fetchFeedbacks();
   }, [eventId]);
 
   return (
@@ -24,9 +28,9 @@ export default function FeedbackList({ eventId }) {
         <ul className="space-y-4">
           {feedbacks.map((fb) => (
             <li key={fb._id} className="border p-3 rounded-lg bg-gray-50">
-              <p className="font-medium">{fb.userId?.username || "Anonymous"}</p>
+              {/* ✅ API me username field directly aa raha hai */}
+              <p className="font-medium">{fb.username || "Anonymous"}</p>
               <p className="text-sm text-gray-600">⭐ {fb.rating}/5</p>
-              <p className="mt-2">{fb.comment}</p>
               <p className="mt-2">{fb.message}</p>
             </li>
           ))}
