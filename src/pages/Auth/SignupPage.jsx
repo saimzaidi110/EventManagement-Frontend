@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiurl } from "../../api";
+import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignupPage() {
   const emailRef = useRef();
@@ -14,6 +15,7 @@ export default function SignupPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,7 +31,7 @@ export default function SignupPage() {
       return;
     }
 
-    const username = email.split('@')[0]; // Auto-generate username
+    const username = email.split("@")[0];
 
     setLoading(true);
     setError(null);
@@ -54,111 +56,120 @@ export default function SignupPage() {
       }
     } catch (err) {
       console.error("Signup error:", err);
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
+      setError(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="bg-white">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Left section (image/text) omitted for brevity */}
-        <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-          <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
-            <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
-              Sign up to Celebration
-            </h2>
-            <p className="mt-2 text-base text-gray-600">
-              Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 hover:underline">
-                Login
-              </Link>
-            </p>
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-6">
+      <div className="w-full max-w-lg bg-white/40 backdrop-blur-xl shadow-2xl rounded-2xl p-8 md:p-10 border border-white/20 animate-fadeIn">
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center drop-shadow-sm">
+          Create Your Account
+        </h2>
+        <p className="mt-2 text-base text-gray-600 text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+            Login
+          </Link>
+        </p>
 
-            {error && <p className="text-red-500 mt-4">{error}</p>}
-            {loading && <p className="text-blue-500 mt-4">Signing up...</p>}
+        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+        {loading && <p className="text-blue-500 mt-4 text-center">Signing up...</p>}
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-
-              <div>
-                <label className="block text-base font-medium text-gray-900">Email</label>
-                <input
-                  type="email"
-                  ref={emailRef}
-                  placeholder="Enter your email"
-                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-base font-medium text-gray-900">Password</label>
-                <input
-                  type="password"
-                  ref={passwordRef}
-                  placeholder="Enter password"
-                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
-                />
-              </div>
-
-              {/* Role Dropdown */}
-              <div>
-                <label className="block text-base font-medium text-gray-900">Role</label>
-                <select
-                  ref={roleRef}
-                  defaultValue=""
-                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
-                >
-                  <option value="" disabled>Select your role</option>
-                  <option value="organizer">Organizer</option>
-                  <option value="exhibitor">Exhibitor</option>
-                  <option value="attendee">Attendee</option>
-                </select>
-              </div>
-
-              {/* Security Question */}
-              <div>
-                <label className="block text-base font-medium text-gray-900">Security Question</label>
-                <select
-                  ref={questionRef}
-                  defaultValue=""
-                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
-                >
-                  <option value="" disabled>Select a security question</option>
-                  <option value="What is your favorite color?">What is your favorite color?</option>
-                  <option value="What is your mother’s maiden name?">What is your mother’s maiden name?</option>
-                  <option value="What was the name of your first pet?">What was the name of your first pet?</option>
-                  <option value="What city were you born in?">What city were you born in?</option>
-                </select>
-              </div>
-
-              {/* Security Answer */}
-              <div>
-                <label className="block text-base font-medium text-gray-900">Your Answer</label>
-                <input
-                  type="text"
-                  ref={answerRef}
-                  placeholder="Enter your answer"
-                  className="w-full py-3 px-4 mt-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600"
-                />
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full px-4 py-4 text-white font-semibold rounded-md bg-gradient-to-r from-fuchsia-600 to-blue-600 hover:opacity-90 transition"
-                >
-                  {loading ? "Signing up..." : "Sign up"}
-                </button>
-              </div>
-            </form>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+          {/* Email */}
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-4 text-gray-400" />
+            <input
+              type="email"
+              ref={emailRef}
+              placeholder="Enter your email"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            />
           </div>
-        </div>
+
+          {/* Password */}
+          <div className="relative">
+            <FaLock className="absolute left-3 top-4 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              ref={passwordRef}
+              placeholder="Enter password"
+              className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 bg-white/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            />
+            <span
+              className="absolute right-3 top-4 cursor-pointer text-gray-500 hover:text-gray-700"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {/* Role */}
+          <div>
+            <select
+              ref={roleRef}
+              defaultValue=""
+              className="w-full py-3 px-4 rounded-lg border border-gray-300 bg-white/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            >
+              <option value="" disabled>
+                Select your role
+              </option>
+              <option value="organizer">Organizer</option>
+              <option value="exhibitor">Exhibitor</option>
+              <option value="attendee">Attendee</option>
+            </select>
+          </div>
+
+          {/* Security Question */}
+          <div>
+            <select
+              ref={questionRef}
+              defaultValue=""
+              className="w-full py-3 px-4 rounded-lg border border-gray-300 bg-white/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            >
+              <option value="" disabled>
+                Select a security question
+              </option>
+              <option value="What is your favorite color?">
+                What is your favorite color?
+              </option>
+              <option value="What is your mother’s maiden name?">
+                What is your mother’s maiden name?
+              </option>
+              <option value="What was the name of your first pet?">
+                What was the name of your first pet?
+              </option>
+              <option value="What city were you born in?">
+                What city were you born in?
+              </option>
+            </select>
+          </div>
+
+          {/* Security Answer */}
+          <div className="relative">
+            <FaUser className="absolute left-3 top-4 text-gray-400" />
+            <input
+              type="text"
+              ref={answerRef}
+              placeholder="Enter your answer"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white/70 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg hover:scale-[1.02] hover:shadow-xl transition-transform"
+            >
+              {loading ? "Signing up..." : "Sign up"}
+            </button>
+          </div>
+        </form>
       </div>
     </section>
   );
