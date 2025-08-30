@@ -44,7 +44,7 @@ const ChatApp = () => {
                     position: 'fixed',
                     bottom: '20px',
                     right: '20px',
-                    backgroundColor: '#d5a351',
+                    backgroundColor: '#515ad5ff',
                     borderRadius: '50%',
                     width: '60px',
                     height: '60px',

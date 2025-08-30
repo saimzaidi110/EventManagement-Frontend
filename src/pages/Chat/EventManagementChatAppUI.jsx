@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Search, Paperclip, Send, UserPlus, LayoutDashboard } from "lucide-react";
 import { UserContext } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { io } from "socket.io-client";
 
@@ -198,7 +198,7 @@ export default function EventManagementWhatsAppUI() {
 
           {/* User List */}
           <div className="flex-1 overflow-y-auto">
-            <ul>
+            <ul>  
               {filtered.map((u) => (
                 <li key={u._id}
                   onClick={() => selectUserChat(u._id)}
