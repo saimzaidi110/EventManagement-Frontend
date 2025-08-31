@@ -30,6 +30,7 @@ import EventManagementChatAppUI from './pages/Chat/EventManagementChatAppUI.jsx'
 
 // 🟢 Yeh hi chatbot hai
 import GeminiPage from './pages/chatbot/GeminiPage'
+import About from './pages/About.jsx'
 
 function App() {
   const { user } = useContext(UserContext)
@@ -37,6 +38,7 @@ function App() {
   const router = createBrowserRouter([
     { path: '/', element: <HomePage /> },
     { path: '/contact', element: <ContactusPage /> },
+     { path: '/about', element: <About/> },
     { path: '/exhibitor', element: <ExhibitorsTable /> },
     { path: '/exhibitor/:id', element: <ExhibitorProfile /> },
     { path: '/login', element: <LoginPage /> },

@@ -113,6 +113,7 @@ export default function UserPage() {
                         value={editFormData.email}
                         onChange={handleInputChange}
                         className="border px-2 py-1"
+                        disabled
                       />
                     ) : (
                       user.email

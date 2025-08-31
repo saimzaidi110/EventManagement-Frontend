@@ -33,6 +33,8 @@ export default function NavbarComponent() {
                             <Link to="/eventschedules" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Schedules </Link>
 
                             <Link to="/contact" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> Contact Us </Link>
+                            <Link to="/about" title="" className="text-base text-white transition-all duration-200 hover:text-opacity-80"> About Us </Link>
+                            
                         </div>
 
                         {!user && <>
