@@ -1,5 +1,6 @@
 import React from 'react'
 import NavbarComponent from '../component/NavbarComponent'
+import FooterComponent from '../component/FooterComponent'
 
 export default function ContactusPage() {
   return (
@@ -251,7 +252,7 @@ export default function ContactusPage() {
         </div>
     </div>
 </section>
-
+<FooterComponent/>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import NavbarComponent from '../component/NavbarComponent'
+import FooterComponent from '../component/FooterComponent'
 
 export default function BlogPage() {
   return (
@@ -109,7 +110,7 @@ export default function BlogPage() {
         
     </div>
 </section>
-
+<FooterComponent/>
     </div>
   )
 }

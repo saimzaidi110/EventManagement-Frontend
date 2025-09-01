@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Star, MapPin, Users } from "lucide-react";
 import NavbarComponent from '../component/NavbarComponent'
 import EventCards from "../component/EventCards"
+import FooterComponent from "../component/FooterComponent";
 
 export default function HomePage() {
   const testimonials = [
@@ -255,21 +256,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 text-center bg-gradient-to-r from-[#625FFF] to-[#9813FA] text-white mt-0">
-        <h2 className="text-3xl font-bold mb-4">
-          Ready to Experience the Best Events?
-        </h2>
-        <p className="mb-6">
-          Join EventSphere and never miss out on exciting opportunities!
-        </p>
-        <Link
-          to="/signup"
-          className="bg-white bg-gradient-to-r from-[#625FFF] to-[#9813FA] bg-clip-text text-transparent px-6 py-3 font-semibold rounded-full hover:bg-gray-100 transition"
-        >
-          Get Started
-        </Link>
-      </section>
+    <FooterComponent/>
+    
     </div>
   );
 }

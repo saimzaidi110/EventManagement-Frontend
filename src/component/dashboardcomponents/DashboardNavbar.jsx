@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import { MessageCircle } from "lucide-react"; // ✅ Import chat icon
+import { MessageCircle, LogOut } from "lucide-react"; // ✅ icons
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,27 +13,44 @@ const Navbar = () => {
   };
 
   const HandleChat = () => {
-    navigate("/chat"); // ✅ Navigate to your chat page
+    navigate("/chat");
   };
 
   return (
-    <div className="bg-white shadow-md p-4 flex justify-between items-center">
-      <h1 className="text-xl font-semibold">Dashboard</h1>
-      <div className="flex items-center gap-3">
-        {/* Chat Icon */}
+    <div className="bg-white shadow-md px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+      {/* Brand / Title */}
+      <h1 className="text-2xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-600 text-transparent bg-clip-text">
+        Dashboard
+      </h1>
+
+      {/* Right Section */}
+      <div className="flex items-center gap-4">
+        {/* Chat Button */}
         <button
           onClick={HandleChat}
-          className="p-2 rounded-full bg-gradient-to-r from-[#625FFF] to-[#9813FA] text-white hover:opacity-90"
+          className="p-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md hover:scale-105 transition"
+          title="Chat"
         >
           <MessageCircle size={20} />
         </button>
 
+        {/* Profile Avatar (optional future use) */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="profile"
+            className="w-8 h-8 rounded-full border"
+          />
+          <span className="text-sm font-medium text-gray-700">Admin</span>
+        </div>
+
         {/* Logout Button */}
         <button
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           onClick={HandleLogout}
+          className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 hover:scale-105 transition"
         >
-          Logout
+          <LogOut size={18} />
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </div>
     </div>
