@@ -2,28 +2,29 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import { FaLinkedinIn } from "react-icons/fa";
 import NavbarComponent from '../component/NavbarComponent'
-import react from "../assets/react.svg";
-// import rihan from "../assets/rihan.png";
+import react from "../../public/react.svg";
+// import saim from "../../public/saim.jpeg";
+import saim from "../../public/saim1.jpeg";
 // import rizi from "../assets/rizi.jpg";
 // import muslim from "../assets/muslim.jpg";
 
 const teamMembers = [
   {
-    name: "Rehan Aziz",
+    name: "Saim Zaidi",
     title: "Founder & CEO",
-    image: react,
+    image:saim,
     linkedin: "#",
     link: "#",
   },
   {
-    name: "Shahzaib Arain",
+    name: "Saeed Ansari",
     title: "Lead Designer",
     image: react,
     linkedin: "https://www.linkedin.com/in/shahzaibarain/",
     link: "#",  // added link here to show arrow icon
   },
   {
-    name: "Raziuddin",
+    name: "Ibtesam",
     title: "CTO",
     image: react,
     linkedin: "#",
@@ -31,7 +32,7 @@ const teamMembers = [
   },
   
   {
-    name: "Muslim ",
+    name: "Ehtisham",
     title: "Community Manager",
     image: react,
     linkedin: "#",

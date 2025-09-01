@@ -25,7 +25,7 @@ const EventCardsSection = () => {
           <div
             key={index}
             className={`rounded-xl overflow-hidden shadow-lg transition-all duration-300 ${
-              index === 1 ? "bg-[#d5a351]" : "bg-[#1E293B]"
+              index === 1 ? "bg-gradient-to-r from-[#625FFF] to-[#9813FA]" : "bg-[#1E293B]"
             }`}
           >
             <img
@@ -50,7 +50,7 @@ const EventCardsSection = () => {
                 className={`mt-6 inline-block font-semibold px-5 py-2.5 rounded-full transition duration-300 text-center shadow-lg ${
                   index === 1
                     ? "bg-black text-white hover:bg-gray-800"
-                    : "bg-[#d5a351] text-white hover:bg-[#e88c0e]"
+                    : "bg-gradient-to-r from-[#625FFF] to-[#9813FA] text-white hover:from-[#4F4BFF] hover:to-[#7A0FDA]"
                 }`}
               >
                 Read More
