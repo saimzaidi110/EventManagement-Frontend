@@ -57,15 +57,15 @@ function App() {
       children: [
         { path: '/dashboard', element: <Dashboard /> },
         { path: 'profile', element: <ProfilePage /> },
-        { path: 'analytics', element: <AnalyticsPage /> },
-        { path: 'users', element: <UserPage /> },
-        { path: 'createevent', element: <CreateEvent /> },
+        { path: 'analytics', element:user?.role == "organizer" ? <AnalyticsPage />:<Navigate to={'/dashboard'} />  },
+        { path: 'users',element:  user?.role == "organizer" ?<UserPage /> :<Navigate to={'/dashboard'} /> },
+        { path: 'createevent', element:  user?.role == "organizer" ?<CreateEvent />:<Navigate to={'/dashboard'} />  },
         { path: 'events', element: user?.role == "organizer" ? <ExpoEventsTable /> : <ExhibitorExpoList /> },
-        { path: 'exporegister/:id', element: <RegisterExpo /> },
-        { path: 'exhibitorrequestlist', element: <ExhibitorRequestList /> },
+        { path: 'exporegister/:id', element: user?.role !== "organizer" ? <RegisterExpo />:<Navigate to={'/dashboard'}/> },
+        { path: 'exhibitorrequestlist', element: user?.role == "organizer" ? <ExhibitorRequestList /> :<Navigate to={'/dashboard'}/>},
         { path: 'setting', element: <SettingPage /> },
         { path: 'help', element: <HelpPAge /> },
-        { path: 'schedulemanagement', element: <ScheduleManagement /> },
+        { path: 'schedulemanagement', element:  user?.role == "organizer" ?<ScheduleManagement />:<Navigate to={'/dashboard'}/> },
       ]
     }
   ])

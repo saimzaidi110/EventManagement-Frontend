@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,13 +9,16 @@ import {
   BarChart2,
   Settings,
   HelpCircle,
-  ClipboardList
+  ClipboardList,
 } from "lucide-react";
+import { UserContext } from "../../context/UserContext";
 
 const Sidebar = () => {
   const location = useLocation();
+  const { user } = useContext(UserContext);
 
-  const navItems = [
+  // Define nav items per role
+  const organizerNavItems = [
     { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
     { to: "profile", label: "Profile", icon: <User size={18} /> },
     { to: "users", label: "Users", icon: <Users size={18} /> },
@@ -27,6 +30,30 @@ const Sidebar = () => {
     { to: "setting", label: "Settings", icon: <Settings size={18} /> },
     { to: "help", label: "Help", icon: <HelpCircle size={18} /> },
   ];
+
+  const exhibitorNavItems = [
+    { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
+    { to: "events", label: "Expo & Events", icon: <Calendar size={18} /> },
+    { to: "setting", label: "Settings", icon: <Settings size={18} /> },
+    { to: "help", label: "Help", icon: <HelpCircle size={18} /> },
+    { to: "profile", label: "Profile", icon: <User size={18} /> },
+  ];
+
+  // Default for others (attendee or no user)
+  const defaultNavItems = [
+    { to: "/", label: "Home", icon: <LayoutDashboard size={18} /> },
+    { to: "help", label: "Help", icon: <HelpCircle size={18} /> },
+  ];
+
+  // Pick nav items based on user role
+  let navItems;
+  if (user?.role === "organizer") {
+    navItems = organizerNavItems;
+  } else if (user?.role === "exhibitor") {
+    navItems = exhibitorNavItems;
+  } else {
+    navItems = defaultNavItems;
+  }
 
   return (
     <div className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-200 h-screen fixed top-0 left-0 shadow-xl flex flex-col">

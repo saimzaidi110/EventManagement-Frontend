@@ -5,7 +5,7 @@ import { MessageCircle, LogOut } from "lucide-react"; // ✅ icons
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { userlogout } = useContext(UserContext);
+  const {user, userlogout } = useContext(UserContext);
 
   const HandleLogout = () => {
     userlogout();
@@ -37,11 +37,12 @@ const Navbar = () => {
         {/* Profile Avatar (optional future use) */}
         <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
           <img
-            src="https://i.pravatar.cc/40"
+           src={`http://localhost:3000${user.image}` || "https://i.pravatar.cc/40"}
+
             alt="profile"
             className="w-8 h-8 rounded-full border"
           />
-          <span className="text-sm font-medium text-gray-700">Admin</span>
+          <span className="text-sm font-medium text-gray-700">{user.role}</span>
         </div>
 
         {/* Logout Button */}

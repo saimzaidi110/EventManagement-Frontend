@@ -123,7 +123,7 @@ export default function DashboardPage() {
                       >
                         <td className="p-3 flex items-center space-x-3">
                           <img
-                            src={user.image}
+                            src={`http://localhost:3000${user.image}` || "https://i.pravatar.cc/40"}
                             alt={user.username}
                             className="w-9 h-9 rounded-full border shadow-sm"
                           />
