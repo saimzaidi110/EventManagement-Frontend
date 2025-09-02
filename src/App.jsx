@@ -31,6 +31,7 @@ import EventManagementChatAppUI from './pages/Chat/EventManagementChatAppUI.jsx'
 // 🟢 Yeh hi chatbot hai
 import GeminiPage from './pages/chatbot/GeminiPage'
 import About from './pages/About.jsx'
+import NotificationPage from './pages/dashboardpages/Exhibitor/NotificationPage.jsx'
 
 function App() {
   const { user } = useContext(UserContext)
@@ -62,6 +63,7 @@ function App() {
         { path: 'createevent', element:  user?.role == "organizer" ?<CreateEvent />:<Navigate to={'/dashboard'} />  },
         { path: 'events', element: user?.role == "organizer" ? <ExpoEventsTable /> : <ExhibitorExpoList /> },
         { path: 'exporegister/:id', element: user?.role !== "organizer" ? <RegisterExpo />:<Navigate to={'/dashboard'}/> },
+        { path: 'notifictaions', element: user?.role !== "organizer" ? <NotificationPage />:<Navigate to={'/dashboard'}/> },
         { path: 'exhibitorrequestlist', element: user?.role == "organizer" ? <ExhibitorRequestList /> :<Navigate to={'/dashboard'}/>},
         { path: 'setting', element: <SettingPage /> },
         { path: 'help', element: <HelpPAge /> },

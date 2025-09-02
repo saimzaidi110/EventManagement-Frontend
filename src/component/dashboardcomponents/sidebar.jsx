@@ -37,6 +37,7 @@ const Sidebar = () => {
     { to: "setting", label: "Settings", icon: <Settings size={18} /> },
     { to: "help", label: "Help", icon: <HelpCircle size={18} /> },
     { to: "profile", label: "Profile", icon: <User size={18} /> },
+    { to: "notifictaions", label: "Notifications", icon: <User size={18} /> },
   ];
 
   // Default for others (attendee or no user)

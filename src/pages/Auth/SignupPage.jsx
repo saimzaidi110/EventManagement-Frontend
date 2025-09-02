@@ -117,7 +117,7 @@ export default function SignupPage() {
               <option value="" disabled>
                 Select your role
               </option>
-              <option value="organizer">Organizer</option>
+              {/* <option value="organizer">Organizer</option> */}
               <option value="exhibitor">Exhibitor</option>
               <option value="attendee">Attendee</option>
             </select>

@@ -150,6 +150,7 @@ export default function ProfilePage() {
             <input
               type="email"
               value={formData.email}
+              disabled
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
