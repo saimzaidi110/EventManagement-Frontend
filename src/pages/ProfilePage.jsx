@@ -45,7 +45,7 @@ export default function ProfilePage() {
       if (formData.image) form.append("image", formData.image);
 
       console.log(form)
-      const res = await axios.put(`http://localhost:3000/users/${user.id}`, form, {
+      const res = await axios.put(`http://localhost:3000/users/${user._id}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log(res.data)
