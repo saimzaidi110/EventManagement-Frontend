@@ -32,6 +32,7 @@ import EventManagementChatAppUI from './pages/Chat/EventManagementChatAppUI.jsx'
 import GeminiPage from './pages/chatbot/GeminiPage'
 import About from './pages/About.jsx'
 import NotificationPage from './pages/dashboardpages/Exhibitor/NotificationPage.jsx'
+import FeedbacksOrganizer from './pages/dashboardpages/Organizer/FeedbacksOrganizer.jsx'
 
 function App() {
   const { user } = useContext(UserContext)
@@ -58,6 +59,7 @@ function App() {
       children: [
         { path: '/dashboard', element: <Dashboard /> },
         { path: 'profile', element: <ProfilePage /> },
+        { path: 'feedbacks', element:user?.role == "organizer" ? <FeedbacksOrganizer />:<Navigate to={'/dashboard'} />  },
         { path: 'analytics', element:user?.role == "organizer" ? <AnalyticsPage />:<Navigate to={'/dashboard'} />  },
         { path: 'users',element:  user?.role == "organizer" ?<UserPage /> :<Navigate to={'/dashboard'} /> },
         { path: 'createevent', element:  user?.role == "organizer" ?<CreateEvent />:<Navigate to={'/dashboard'} />  },

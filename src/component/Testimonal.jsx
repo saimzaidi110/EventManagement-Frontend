@@ -5,8 +5,9 @@ import NavbarComponent from '../component/NavbarComponent'
 import react from "../../public/react.svg";
 // import saim from "../../public/saim.jpeg";
 import saim from "../../public/saim1.jpeg";
-// import rizi from "../assets/rizi.jpg";
-// import muslim from "../assets/muslim.jpg";
+import saeed from "../../public/saeed.jpeg";
+import ibtesam from "../../public/ibtesam.jpeg"
+import ehtisham from "../../public/ehtisham.jpeg"
 
 const teamMembers = [
   {
@@ -19,14 +20,14 @@ const teamMembers = [
   {
     name: "Saeed Ansari",
     title: "Lead Designer",
-    image: react,
-    linkedin: "https://www.linkedin.com/in/shahzaibarain/",
+    image: saeed,
+    linkedin: "#",
     link: "#",  // added link here to show arrow icon
   },
   {
     name: "Ibtesam",
     title: "CTO",
-    image: react,
+    image: ibtesam,
     linkedin: "#",
     link: "#",
   },
@@ -34,7 +35,7 @@ const teamMembers = [
   {
     name: "Ehtisham",
     title: "Community Manager",
-    image: react,
+    image: ehtisham,
     linkedin: "#",
     link: "#",  // added default link
   },

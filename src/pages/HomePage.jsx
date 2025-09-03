@@ -8,14 +8,14 @@ import FooterComponent from "../component/FooterComponent";
 export default function HomePage() {
   const testimonials = [
     {
-      name: "Sarah Ahmed",
+      name: "Imran Malik",
       feedback:
         "Working with Shahzaib was a fantastic experience! He transformed my ideas into a professional and modern website. His communication was clear, and delivery was even faster than expected. Highly recommended!",
       designation: "Founder, DigitalSpark",
       image: "https://randomuser.me/api/portraits/men/32.jpg",
     },
     {
-      name: "Imran Malik",
+      name: "Sarah Ahmed",
       feedback:
         "Extremely talented and reliable. Shahzaib handled our WordPress project from start to finish with great attention to detail. We've already hired him for our next job!",
       designation: " CEO, TechNova",

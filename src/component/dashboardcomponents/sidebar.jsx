@@ -26,6 +26,7 @@ const Sidebar = () => {
     { to: "events", label: "Expo & Events", icon: <Calendar size={18} /> },
     { to: "exhibitorrequestlist", label: "Exhibitor Request", icon: <ClipboardList size={18} /> },
     { to: "schedulemanagement", label: "Schedule Management", icon: <Calendar size={18} /> },
+    { to: "feedbacks", label: "Feedbacks", icon: <BarChart2 size={18} /> },
     { to: "analytics", label: "Analytics", icon: <BarChart2 size={18} /> },
     { to: "setting", label: "Settings", icon: <Settings size={18} /> },
     { to: "help", label: "Help", icon: <HelpCircle size={18} /> },
