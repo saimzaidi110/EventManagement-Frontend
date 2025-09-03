@@ -80,10 +80,10 @@ export default function FooterComponent() {
                     <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Help Center</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">FAQs</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">FAQs</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Privacy Policy</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Privacy Policy</a>
                   </li>
                 </ul>
               </div>
@@ -96,13 +96,13 @@ export default function FooterComponent() {
                     <Link to="/about" className="text-base text-gray-100 hover:text-white transition-colors">About Us</Link>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Careers</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Careers</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Press</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Press</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Partners</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Partners</a>
                   </li>
                 </ul>
               </div>
@@ -110,16 +110,16 @@ export default function FooterComponent() {
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200">Connect</h3>
                 <ul className="mt-4 space-y-4">
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Newsletter</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Newsletter</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Community</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Community</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Testimonials</a>
+                    <a  className="text-base text-gray-100 hover:text-white transition-colors">Testimonials</a>
                   </li>
                   <li>
-                    <a href="#" className="text-base text-gray-100 hover:text-white transition-colors">Contact Sales</a>
+                    <a className="text-base text-gray-100 hover:text-white transition-colors">Contact Sales</a>
                   </li>
                 </ul>
               </div>
