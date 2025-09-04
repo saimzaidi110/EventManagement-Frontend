@@ -78,7 +78,7 @@ const ChatApp = () => {
                         overflow: 'hidden',
                     }}
                 >
-                    <div style={{ backgroundColor: '#d5a351', color: 'white', padding: '10px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}>
+                    <div style={{ backgroundColor: '#515ad5ff', color: 'white', padding: '10px', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}>
                         <strong>AI Chatbot</strong>
                     </div>
 
@@ -96,7 +96,7 @@ const ChatApp = () => {
                                 key={index}
                                 style={{
                                     alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                                    backgroundColor: message.sender === 'user' ? '#d5a351' : '#E0E0E0',
+                                    backgroundColor: message.sender === 'user' ? '#515ad5ff' : '#E0E0E0',
                                     color: message.sender === 'user' ? 'white' : 'black',
                                     padding: '8px 12px',
                                     borderRadius: '15px',
@@ -132,7 +132,7 @@ const ChatApp = () => {
                             style={{
                                 marginLeft: '8px',
                                 padding: '10px 15px',
-                                backgroundColor: '#d5a351',
+                                backgroundColor: '#515ad5ff',
                                 color: 'white',
                                 border: 'none',
                                 borderRadius: '5px',
