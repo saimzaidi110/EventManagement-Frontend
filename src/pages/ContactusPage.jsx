@@ -38,7 +38,9 @@ export default function ContactusPage() {
                 <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                     <div class="max-w-2xl mx-auto text-center">
                         <h2 class="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">Contact us</h2>
-                        <p class="max-w-xl mx-auto mt-4 text-base leading-relaxed text-white">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis.</p>
+<p class="max-w-xl mx-auto mt-4 text-base leading-relaxed text-white">
+  We’d love to hear from you. Whether you have questions, feedback, or event needs, our team is here to provide prompt, professional support every step of the way.
+</p>
                     </div>
 
                     <div class="max-w-6xl mx-auto mt-12 overflow-hidden bg-white rounded-md shadow-md lg:mt-20">

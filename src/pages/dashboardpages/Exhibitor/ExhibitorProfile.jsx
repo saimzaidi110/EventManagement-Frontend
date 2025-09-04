@@ -26,7 +26,7 @@ export default function ExhibitorProfile() {
       .then((res) => {
         const expos = res.data;
         const registeredEvents = expos.filter((expo) =>
-          expo.exhibitorList.some((ex) => ex._id === id)
+          expo.exhibitorList.some((ex) => ex.id === id)
         );
         setEvents(registeredEvents);
       })
