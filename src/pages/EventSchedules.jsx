@@ -22,9 +22,9 @@ export default function EventSchedules() {
 
     // Fetch user bookmarks from API
     useEffect(() => {
-        if (user?.id) {
+        if (user?._id) {
             axios
-                .get(`http://localhost:3000/api/bookmarks/${user.id}`)
+                .get(`http://localhost:3000/api/bookmarks/${user._id}`)
                 .then((res) => {
                     setBookmarks(res.data.map((b) => b.eventId._id));
                 })
@@ -34,14 +34,14 @@ export default function EventSchedules() {
 
     // Handle bookmarking
     const toggleBookmark = async (eventId) => {
-        if (!user?.id) {
+        if (!user?._id) {
             toast.error("Please login to bookmark sessions.");
             return;
         }
 
         try {
             const res = await axios.post("http://localhost:3000/api/bookmarks", {
-                userId: user.id,
+                userId: user._id,
                 eventId,
             });
 

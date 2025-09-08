@@ -24,25 +24,25 @@ export default function EventManagementWhatsAppUI() {
 
   // --- INIT SOCKET ---
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?._id) return;
     if (!socketRef.current) {
       socketRef.current = io(SOCKET_URL, { transports: ["websocket"] });
     }
     const socket = socketRef.current;
 
-    socket.emit("join", user.id);
+    socket.emit("join", user._id);
 
     // Prepare audio
     const notificationSound = new Audio("/notify.wav");
 
     socket.on("message:new", (msg) => {
       if (
-        (msg.senderId === user.id && msg.receiverId === selectedUserId) ||
-        (msg.receiverId === user.id && msg.senderId === selectedUserId)
+        (msg.senderId === user._id && msg.receiverId === selectedUserId) ||
+        (msg.receiverId === user._id && msg.senderId === selectedUserId)
       ) {
         // Active chat → show directly
-        setMessages((prev) => [...prev, { ...msg, outgoing: msg.senderId === user.id }]);
-      } else if (msg.receiverId === user.id) {
+        setMessages((prev) => [...prev, { ...msg, outgoing: msg.senderId === user._id }]);
+      } else if (msg.receiverId === user._id) {
         // Not active chat → bump unread
         setUnreadCounts((prev) => ({
           ...prev,
@@ -51,7 +51,7 @@ export default function EventManagementWhatsAppUI() {
       }
 
       // 🔔 Play sound only if message is from someone else
-      if (msg.senderId !== user.id) {
+      if (msg.senderId !== user._id) {
         notificationSound.play().catch(() => {
           console.warn("Autoplay prevented, user must interact first.");
         });
@@ -61,7 +61,7 @@ export default function EventManagementWhatsAppUI() {
     return () => {
       socket.off("message:new");
     };
-  }, [user?.id, selectedUserId]);
+  }, [user?._id, selectedUserId]);
 
   // Fetch users
   useEffect(() => {
@@ -70,23 +70,23 @@ export default function EventManagementWhatsAppUI() {
       .then((data) => {
         if (data.status) {
           setUsers(data.users);
-          const firstOther = data.users.find((u) => u._id !== user?.id) || data.users[0];
+          const firstOther = data.users.find((u) => u._id !== user?._id) || data.users[0];
           if (firstOther) setSelectedUserId(firstOther._id);
         }
       })
       .catch((err) => console.error("Error fetching users:", err));
-  }, [user?.id]);
+  }, [user?._id]);
 
   // Fetch messages when selectedUserId changes
   useEffect(() => {
-    if (!selectedUserId || !user?.id) return;
+    if (!selectedUserId || !user?._id) return;
 
-    axios.get(`http://localhost:3000/messages/${user.id}/${selectedUserId}`)
+    axios.get(`http://localhost:3000/messages/${user._id}/${selectedUserId}`)
       .then((res) => {
         if (res.data.status) {
           const formatted = res.data.messages.map((m) => ({
             ...m,
-            outgoing: m.senderId === user.id,
+            outgoing: m.senderId === user._id,
           }));
           setMessages(formatted);
         }
@@ -99,7 +99,7 @@ export default function EventManagementWhatsAppUI() {
       delete newCounts[selectedUserId];
       return newCounts;
     });
-  }, [selectedUserId, user?.id]);
+  }, [selectedUserId, user?._id]);
 
   useEffect(() => {
     scrollToBottom();
@@ -113,7 +113,7 @@ export default function EventManagementWhatsAppUI() {
     if (!composerText.trim() || !selectedUserId) return;
 
     const newMsg = {
-      senderId: user?.id,
+      senderId: user?._id,
       receiverId: selectedUserId,
       text: composerText.trim(),
       time: new Date().toISOString(),
@@ -134,7 +134,7 @@ export default function EventManagementWhatsAppUI() {
 
   const filtered = users.filter(
     (u) =>
-      u._id !== user?.id &&
+      u._id !== user?._id &&
       (roleFilter === "all" || u.role === roleFilter) &&
       (u.username.toLowerCase().includes(query.toLowerCase()) ||
         u.email.toLowerCase().includes(query.toLowerCase()))
@@ -262,7 +262,7 @@ export default function EventManagementWhatsAppUI() {
               <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
                 <div className="max-w-3xl mx-auto space-y-3">
                   {messages.map((m) => (
-                    <MessageBubble key={m._id || Math.random()} message={m} senderId={user.id} />
+                    <MessageBubble key={m._id || Math.random()} message={m} senderId={user._id} />
                   ))}
                   <div ref={messagesEndRef} />
                 </div>

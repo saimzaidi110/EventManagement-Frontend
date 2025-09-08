@@ -29,7 +29,7 @@ export default function SettingPage() {
   const handleDelete = async () => {
 
     try {
-      let res = await axios.delete(`http://localhost:3000/users/${user.id}`)
+      let res = await axios.delete(`http://localhost:3000/users/${user._id}`)
 console.log(res.data)
       setShowDeleteConfirm(false);
       toast.success("Account Deleted!");

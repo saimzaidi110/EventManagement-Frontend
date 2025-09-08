@@ -105,7 +105,7 @@ useEffect(() => {
     try {
       const res = await axios.post("http://localhost:3000/api/feedbacks", {
         eventId: id,
-        userId: user.id,
+        userId: user._id,
         username: user.username,
         message: comment,
         rating, // ✅ send rating explicitly to satisfy schema
